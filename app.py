@@ -1,8 +1,17 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import joblib
 import time
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 model = joblib.load("fatigue_model.pkl")
 scaler = joblib.load("scaler.pkl")
 latest_data = {}
@@ -25,3 +34,4 @@ def fatigue(data: dict):
 @app.get("/latest_data")
 def get_latest_data():
     return latest_data
+
